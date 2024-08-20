@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:piano_tiles_2/presentation/views/start_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'presentation/views/home_view.dart';
 
 
 late SharedPreferences sharedPreferences;
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       title: 'My Fun Space',
-      home: StartView(),
+      home: HomeView(),
     );
   }
 }

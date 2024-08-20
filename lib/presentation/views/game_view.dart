@@ -1,11 +1,13 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
-import 'package:piano_tiles_2/main.dart';
-import 'package:piano_tiles_2/model/song_model.dart';
+import '../../main.dart';
+import '../../model/song_model.dart';
 
 import '../../model/node_model.dart';
 import '../../provider/game_state.dart';
 import '../../provider/mission_provider.dart';
+import '../widgets/custom_progress_stars.dart';
+import '../widgets/custom_restart_dialog.dart';
 import '../widgets/line.dart';
 import '../widgets/line_divider.dart';
 
@@ -74,8 +76,7 @@ class _GameViewState extends State<GameView>
           }
           _showFinishDialog();
           audioPlayer.stop();
-        }
-        else {
+        } else {
           setState(() => ++currentNoteIndex);
           animationController.forward(from: 0);
         }
@@ -106,11 +107,11 @@ class _GameViewState extends State<GameView>
         note.state = NoteState.tapped;
 
         if (points == 50) {
-          animationController.duration = const Duration(milliseconds: 600);
-        } else if (points == 100) {
-          animationController.duration = const Duration(milliseconds: 500);
-        } else if (points == 150) {
           animationController.duration = const Duration(milliseconds: 400);
+        } else if (points == 100) {
+          animationController.duration = const Duration(milliseconds: 300);
+        } else if (points == 150) {
+          animationController.duration = const Duration(milliseconds: 200);
         }
       });
     }
@@ -192,197 +193,5 @@ class _GameViewState extends State<GameView>
 
   _playNote(Note note) {
     tapPlayer.play(AssetSource('a.wav'));
-  }
-}
-
-class CustomRestartDialog extends StatelessWidget {
-  const CustomRestartDialog({
-    super.key,
-    required this.points,
-    required this.restart,
-  });
-
-  final int points;
-  final dynamic restart;
-
-  @override
-  Widget build(BuildContext context) {
-    return PopScope(
-      canPop: false,
-      child: AlertDialog(
-        backgroundColor: Colors.black.withOpacity(0.5),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(24),
-          side: const BorderSide(
-            color: Colors.grey,
-          ),
-        ),
-        content: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            InkWell(
-              onTap: () {
-                Navigator.pop(context);
-                restart();
-              },
-              child: Container(
-                height: 100,
-                width: 100,
-                alignment: Alignment.center,
-                decoration: const BoxDecoration(
-                  color: Colors.blue,
-                  borderRadius: BorderRadius.all(Radius.circular(150)),
-                ),
-                child: const Icon(Icons.play_arrow, size: 50),
-              ),
-            ),
-            const SizedBox(height: 10),
-            Container(
-              alignment: Alignment.center,
-              decoration: const BoxDecoration(
-                color: Colors.blue,
-                borderRadius: BorderRadius.all(Radius.circular(150)),
-              ),
-              child: Directionality(
-                textDirection: TextDirection.rtl,
-                child: Text(
-                  "مجموع النقاط: $points",
-                  style: const TextStyle(fontSize: 18, color: Colors.black),
-                ),
-              ),
-            ),
-            const SizedBox(height: 10),
-            CustomScoreStars(points: points),
-            const SizedBox(height: 10),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pop(context);
-                Navigator.pop(context);
-              },
-              style: ElevatedButton.styleFrom(),
-              child: const Text("رجوع", style: TextStyle(fontSize: 18),),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class CustomProgressStars extends StatelessWidget {
-  const CustomProgressStars({super.key, required this.points});
-
-  final int points;
-
-  @override
-  Widget build(BuildContext context) {
-    return Positioned(
-      top: 10,
-      right: 50,
-      left: 50,
-      child: SafeArea(
-        child: Column(
-          children: [
-            SizedBox(
-              height: 30,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ...List.generate(
-                    49,
-                    (index) => Container(
-                      height: 4,
-                      width: 1.2,
-                      color: index < points ? Colors.yellow : Colors.blueGrey,
-                    ),
-                  ),
-                  Icon(
-                    Icons.star,
-                    color: points >= 50 ? Colors.yellow : Colors.blueGrey,
-                  ),
-                  ...List.generate(
-                    49,
-                    (index) => Container(
-                      height: 4,
-                      width: 1.2,
-                      color: (index + 50) < points
-                          ? Colors.yellow
-                          : Colors.blueGrey,
-                    ),
-                  ),
-                  Icon(
-                    Icons.star,
-                    color: points >= 100 ? Colors.yellow : Colors.blueGrey,
-                  ),
-                  ...List.generate(
-                    49,
-                    (index) => Container(
-                      height: 4,
-                      width: 1.2,
-                      color: (index + 100) < points
-                          ? Colors.yellow
-                          : Colors.blueGrey,
-                    ),
-                  ),
-                  Icon(
-                    Icons.star,
-                    color: points >= 150 ? Colors.yellow : Colors.blueGrey,
-                  ),
-                ],
-              ),
-            ),
-            CustomPointsText(points: points),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class CustomScoreStars extends StatelessWidget {
-  const CustomScoreStars({super.key, required this.points});
-
-  final int points;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Icon(
-          points >= 50 ? Icons.star : Icons.star_border_outlined,
-          color: points >= 50 ? Colors.yellow : Colors.grey,
-        ),
-        Icon(
-          points >= 100 ? Icons.star : Icons.star_border_outlined,
-          color: points >= 100 ? Colors.yellow : Colors.grey,
-        ),
-        Icon(
-          points >= 150 ? Icons.star : Icons.star_border_outlined,
-          color: points >= 150 ? Colors.yellow : Colors.grey,
-        ),
-      ],
-    );
-  }
-}
-
-class CustomPointsText extends StatelessWidget {
-  const CustomPointsText({super.key, required this.points});
-
-  final int points;
-
-  @override
-  Widget build(BuildContext context) {
-    return Align(
-      alignment: Alignment.topCenter,
-      child: Padding(
-        padding: const EdgeInsets.only(top: 0.0),
-        child: Text(
-          "$points",
-          style: const TextStyle(color: Colors.red, fontSize: 60),
-        ),
-      ),
-    );
   }
 }

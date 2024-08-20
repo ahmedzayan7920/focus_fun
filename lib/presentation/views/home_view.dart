@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:piano_tiles_2/main.dart';
-import 'package:piano_tiles_2/model/song_model.dart';
-import 'package:piano_tiles_2/presentation/views/game_view.dart';
+import '../../main.dart';
+import '../../model/song_model.dart';
+import 'game_view.dart';
+
+import '../widgets/custom_score_stars.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
