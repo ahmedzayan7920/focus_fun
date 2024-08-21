@@ -76,152 +76,138 @@ class _HomeViewState extends State<HomeView> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFCFE2F0),
-      body: Stack(
+      body: Column(
         children: [
-
-          SafeArea(
-            child: IconButton(
-              onPressed: () {
-                Navigator.maybePop(context);
-              },
-              icon: const Icon(
-                Icons.arrow_back,
-                size: 60,
-                color: Colors.black,
-              ),
+          const SafeArea(
+            child: Text(
+              "Piano Tiles",
+              style: TextStyle(fontSize: 40),
             ),
           ),
-          Column(
-            children: [
-              const SafeArea(
-                child: Text(
-                  "Piano Tiles",
-                  style: TextStyle(fontSize: 40),
+          Container(
+            width: 200,
+            decoration: BoxDecoration(
+                color: Colors.grey.withOpacity(0.5),
+                borderRadius: BorderRadius.circular(16)),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(
+                  Icons.star,
+                  color: Colors.yellow,
                 ),
-              ),
-              Container(
-                width: 200,
-                decoration: BoxDecoration(
-                    color: Colors.grey.withOpacity(0.5),
-                    borderRadius: BorderRadius.circular(16)),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Icon(
-                      Icons.star,
-                      color: Colors.yellow,
-                    ),
-                    Text(
-                      "$stars",
-                      style: const TextStyle(color: Colors.white, fontSize: 18),
-                    ),
-                  ],
+                Text(
+                  "$stars",
+                  style: const TextStyle(color: Colors.white, fontSize: 18),
                 ),
-              ),
-              Expanded(
-                child: ListView.builder(
-                  itemCount: songs.length,
-                  itemBuilder: (context, index) {
-                    return Card(
-                      elevation: 20,
-                      margin: const EdgeInsets.all(8),
-                      child: Container(
-                        height: 100,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            ClipRRect(
-                              borderRadius: const BorderRadius.only(
-                                topLeft: Radius.circular(16),
-                                bottomLeft: Radius.circular(16),
-                              ),
-                              child: Stack(
-                                children: [
-                                  Container(
-                                    width: 70,
-                                    height: double.infinity,
-                                    color: Colors.yellow,
-                                    padding: const EdgeInsets.all(8),
-                                    child: Text(
-                                      "${index + 1}",
-                                      style: const TextStyle(
-                                        fontSize: 20,
-                                      ),
-                                    ),
+              ],
+            ),
+          ),
+          Expanded(
+            child: ListView.builder(
+              itemCount: songs.length,
+              itemBuilder: (context, index) {
+                return Card(
+                  elevation: 20,
+                  margin: const EdgeInsets.all(8),
+                  child: Container(
+                    height: 100,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        ClipRRect(
+                          borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(16),
+                            bottomLeft: Radius.circular(16),
+                          ),
+                          child: Stack(
+                            children: [
+                              Container(
+                                width: 70,
+                                height: double.infinity,
+                                color: Colors.yellow,
+                                padding: const EdgeInsets.all(8),
+                                child: Text(
+                                  "${index + 1}",
+                                  style: const TextStyle(
+                                    fontSize: 20,
                                   ),
-                                  const Positioned(
-                                    right: -20,
-                                    bottom: -20,
-                                    child: Icon(
-                                      Icons.star,
-                                      size: 70,
-                                      color: Colors.yellowAccent,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            const SizedBox(width: 16),
-                            Expanded(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    songs[index].name,
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: const TextStyle(fontSize: 20),
-                                  ),
-                                  Text(
-                                    songs[index].actor,
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: const TextStyle(
-                                      fontSize: 16,
-                                      color: Colors.grey,
-                                    ),
-                                  ),
-                                  CustomScoreStars(points: songs[index].points),
-                                ],
-                              ),
-                            ),
-                            const SizedBox(width: 8),
-                            Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                ElevatedButton(
-                                  onPressed: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => GameView(
-                                          song: songs[index],
-                                        ),
-                                      ),
-                                    ).then((value) {
-                                      initSongs();
-                                    });
-                                  },
-                                  child: const Text("ابدأ", style: TextStyle(fontSize: 18),),
                                 ),
-                                const SizedBox(height: 8),
-                              ],
+                              ),
+                              const Positioned(
+                                right: -20,
+                                bottom: -20,
+                                child: Icon(
+                                  Icons.star,
+                                  size: 70,
+                                  color: Colors.yellowAccent,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                songs[index].name,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(fontSize: 20),
+                              ),
+                              Text(
+                                songs[index].actor,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                              CustomScoreStars(points: songs[index].points),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            ElevatedButton(
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => GameView(
+                                      song: songs[index],
+                                    ),
+                                  ),
+                                ).then((value) {
+                                  initSongs();
+                                });
+                              },
+                              child: const Text(
+                                "ابدأ",
+                                style: TextStyle(fontSize: 18),
+                              ),
                             ),
-                            const SizedBox(width: 8),
+                            const SizedBox(height: 8),
                           ],
                         ),
-                      ),
-                    );
-                  },
-                ),
-              ),
-            ],
+                        const SizedBox(width: 8),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            ),
           ),
         ],
       ),

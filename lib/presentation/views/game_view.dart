@@ -26,7 +26,6 @@ class GameView extends StatefulWidget {
 class _GameViewState extends State<GameView>
     with SingleTickerProviderStateMixin {
   late List<Note> notes = mission();
-  AudioPlayer tapPlayer = AudioPlayer();
   AudioPlayer losePlayer = AudioPlayer();
   AudioPlayer audioPlayer = AudioPlayer();
   late AnimationController animationController;
@@ -38,7 +37,6 @@ class _GameViewState extends State<GameView>
   @override
   void initState() {
     super.initState();
-    tapPlayer.setVolume(0.02);
     animationController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 0),
@@ -69,14 +67,16 @@ class _GameViewState extends State<GameView>
           //song finished
           _showFinishDialog();
           audioPlayer.stop();
-        } else if (points == 150) {
-          int previousPoints = widget.song.points;
-          if (points > previousPoints) {
-            sharedPreferences.setInt(widget.song.path, points);
-          }
-          _showFinishDialog();
-          audioPlayer.stop();
-        } else {
+        }
+        // else if (points == 150) {
+        //   int previousPoints = widget.song.points;
+        //   if (points > previousPoints) {
+        //     sharedPreferences.setInt(widget.song.path, points);
+        //   }
+        //   _showFinishDialog();
+        //   audioPlayer.stop();
+        // }
+        else {
           setState(() => ++currentNoteIndex);
           animationController.forward(from: 0);
         }
@@ -99,7 +99,6 @@ class _GameViewState extends State<GameView>
         setState(() => hasStarted = true);
         animationController.forward();
       }
-      _playNote(note);
       setState(() {
         if (note.state != NoteState.tapped) {
           ++points;
@@ -107,11 +106,11 @@ class _GameViewState extends State<GameView>
         note.state = NoteState.tapped;
 
         if (points == 50) {
-          animationController.duration = const Duration(milliseconds: 400);
+          animationController.duration = const Duration(milliseconds: 5500);
         } else if (points == 100) {
-          animationController.duration = const Duration(milliseconds: 300);
+          animationController.duration = const Duration(milliseconds: 4500);
         } else if (points == 150) {
-          animationController.duration = const Duration(milliseconds: 200);
+          animationController.duration = const Duration(milliseconds: 3500);
         }
       });
     }
@@ -132,7 +131,6 @@ class _GameViewState extends State<GameView>
   void dispose() {
     super.dispose();
     animationController.dispose();
-    tapPlayer.dispose();
     audioPlayer.dispose();
     losePlayer.dispose();
   }
@@ -144,7 +142,7 @@ class _GameViewState extends State<GameView>
       notes = mission();
       points = 0;
       currentNoteIndex = 0;
-      animationController.duration = const Duration(milliseconds: 700);
+      animationController.duration = const Duration(milliseconds: 6500);
     });
     animationController.reset();
   }
@@ -189,9 +187,5 @@ class _GameViewState extends State<GameView>
         ),
       ),
     );
-  }
-
-  _playNote(Note note) {
-    tapPlayer.play(AssetSource('a.wav'));
   }
 }
