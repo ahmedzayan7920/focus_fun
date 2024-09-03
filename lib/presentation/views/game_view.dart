@@ -1,9 +1,9 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
-import '../../main.dart';
-import '../../model/song_model.dart';
 
+import '../../main.dart';
 import '../../model/node_model.dart';
+import '../../model/song_model.dart';
 import '../../provider/game_state.dart';
 import '../../provider/mission_provider.dart';
 import '../widgets/custom_progress_stars.dart';
@@ -106,11 +106,11 @@ class _GameViewState extends State<GameView>
         note.state = NoteState.tapped;
 
         if (points == 50) {
-          animationController.duration = const Duration(milliseconds: 5500);
+          animationController.duration = const Duration(milliseconds: 300);
         } else if (points == 100) {
-          animationController.duration = const Duration(milliseconds: 4500);
+          animationController.duration = const Duration(milliseconds: 250);
         } else if (points == 150) {
-          animationController.duration = const Duration(milliseconds: 3500);
+          animationController.duration = const Duration(milliseconds: 200);
         }
       });
     }
@@ -142,7 +142,7 @@ class _GameViewState extends State<GameView>
       notes = mission();
       points = 0;
       currentNoteIndex = 0;
-      animationController.duration = const Duration(milliseconds: 6500);
+      animationController.duration = const Duration(milliseconds: 350);
     });
     animationController.reset();
   }
